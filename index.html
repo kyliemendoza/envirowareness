@@ -13,6 +13,25 @@
         height: 100%;
         width: 100%;
       }
+
+      .addRecordBtn {
+        position: absolute;
+        z-index: 10;
+        top: 10px;
+        right: 10px;
+        background-color: #0079c1;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .addRecordBtn:hover {
+        background-color: #005a87;
+      }
     </style>
 
     <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css" />
@@ -73,7 +92,7 @@
                 });
         
         map.add(layer);
-        
+
         const customSearchSource = new SearchSource({
           placeholder: "example:  75001 Paris, France",
           // Provide a getSuggestions method to provide suggestions to the Search widget
@@ -170,6 +189,10 @@
   </head>
 
   <body>
+
+    <a href="https://arcg.is/vzmr80">Add Record</a>
+    
     <div id="viewDiv"></div>
+
   </body>
 </html>
