@@ -28,8 +28,18 @@
 
    <!-- loading the modules -->
    <script>
-        require(["esri/config", "esri/Map", "esri/views/MapView", "esri/widgets/Locate", "esri/widgets/Search"], 
-        (esriConfig, Map, MapView, Locate, Search) => {
+        require([
+          "esri/config",
+          "esri/Map",
+          "esri/views/MapView", 
+          "esri/widgets/Locate", 
+          "esri/widgets/Search"], 
+          (esriConfig, 
+          Map, 
+          MapView, 
+          Locate, 
+          Search) => {
+
             esriConfig.apiKey = "AAPK62bde82e369d4943951d79ac7ac6a711b5sb-8m_BQh9qgJqLawG2_3xrwLrcSD4I-zCs4IvCg2S1twr3cUQjv09NBUDn5Mx";
             
             const map = new Map({
@@ -40,31 +50,25 @@
             const view = new MapView({
                 container: "viewDiv", // Reference to the DOM node that will contain the view
                 map: map, // References the map object
-                center: [-80.122877, 25.885995], // Longitude, latitude (Surfside)
+                center: [-80.122877, 25.885995], // Lon, lat (Surfside)
                 zoom: 13, //
             });
           
-            const locateBtn = new Locate({
+            const locateBtn = new Locate({ // Add the locate widget to the view
               view: view
             });
 
-          // Add the locate widget to the top left corner of the view
-          view.ui.add(locateBtn, {
+          view.ui.add(locateBtn, { // Add the locate widget to the top left corner of the view
             position: "top-left"
             });
 
-        // ***** CHALLENGE 2: Add a search widget *****    
-        const search = new Search({
-          view: view,
-          sources: [{
-            locator: new Locator({ url: "https://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?address={searchText}&outFields={fieldList}&f=json&token=<ACCESS_TOKEN>" }),
-            singleLineFieldName: "SingleLine",
-            name: "Geocoder"
-          }]
+        // ***** CHALLENGE 2: Add a search widget *****  
+        const searchWidget = new Search({
+          view: view
         });
-
-        view.ui.add(search, "top-right")
-      });
+        
+        view.ui.add(search, "top-right");
+});
     </script>
 
   </head>
