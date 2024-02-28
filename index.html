@@ -57,7 +57,7 @@
         const search = new Search({
           view: view,
           sources: [{
-            locator: new Locator({ url: "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer" }),
+            locator: new Locator({ url: "https://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?address={searchText}&outFields={fieldList}&f=json&token=<ACCESS_TOKEN>" }),
             singleLineFieldName: "SingleLine",
             name: "Geocoder"
           }]
