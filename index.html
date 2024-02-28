@@ -53,16 +53,17 @@
             position: "top-left"
             });
 
-        // ***** CHALLENGE 2: Add a search widget *****
-            const search = new Search({
-              view: view
-            });
+        // ***** CHALLENGE 2: Add a search widget *****    
+        const search = new Search({
+          view: view,
+          sources: [{
+            locator: new Locator({ url: "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer" }),
+            singleLineFieldName: "SingleLine",
+            name: "Geocoder"
+          }]
+        });
 
-            // Add the search widget to the top right corner of the view
-            view.ui.add(search, {
-              position: "top-right",
-              index: 2
-            });
+        view.ui.add(search, "top-right")
       });
     </script>
 
