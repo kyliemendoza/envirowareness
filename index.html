@@ -28,8 +28,8 @@
 
    <!-- loading the modules -->
    <script>
-        require(["esri/config", "esri/Map", "esri/views/MapView" ], 
-        (esriConfig, Map, MapView) => {
+        require(["esri/config", "esri/Map", "esri/views/MapView", "esri/widgets/Locate" ], 
+        (esriConfig, Map, MapView, Locate) => {
             esriConfig.apiKey = "AAPK62bde82e369d4943951d79ac7ac6a711b5sb-8m_BQh9qgJqLawG2_3xrwLrcSD4I-zCs4IvCg2S1twr3cUQjv09NBUDn5Mx";
             
             const map = new Map({
@@ -43,7 +43,16 @@
                 center: [-80.122877, 25.885995], // Longitude, latitude (Surfside)
                 zoom: 13, //
             });
-         });
+          
+            const locateBtn = new Locate({
+              view: view
+            });
+
+        // Add the locate widget to the top left corner of the view
+        view.ui.add(locateBtn, {
+          position: "top-left"
+          });
+      });
     </script>
 
   </head>
