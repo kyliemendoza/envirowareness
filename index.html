@@ -120,6 +120,9 @@ const MarineSurvey = new FeatureLayer({
   popupTemplate: popupSurvey
 });
 
+// Adding the important feature layers to the map
+map.addMany([FishKill, AlgalBloom, MarineSurvey]);
+
         // Create Search widget using custom SearchSource
         const searchWidget = new Search({
           view: view,
@@ -137,7 +140,7 @@ const MarineSurvey = new FeatureLayer({
   </head>
 
   <body>
-    <!-- Below is link to Survey123 pollution form and will show an 'Add Record' button to user -->
+    <!-- Below is link to Survey123 Marine Report form and will show a 'Submit Report' button to user -->
     <a href="https://arcg.is/4raiq0">Submit Report</a> 
     
     <div id="viewDiv"></div>
