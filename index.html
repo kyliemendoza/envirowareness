@@ -93,7 +93,7 @@
             popuptemplate: popuptemplate
               });
           
-            map.add(layer);
+            map.add(FishKill);
 
         // Adding Algal Bloom featurelayer from feature service
           const AlgalBloom = new FeatureLayer({ 
@@ -103,7 +103,7 @@
             popuptemplate: popuptemplate
             });
           
-            map.add(layer);
+            map.add(AlgalBloom);
 
     // Constructing the popup survey for marking marine pollution    
 const popupSurvey = {
@@ -141,7 +141,7 @@ map.addMany([FishKill, AlgalBloom, MarineSurvey]);
 
   <body>
     <!-- Below is link to Survey123 Marine Report form and will show a 'Submit Report' button to user -->
-    <a href="https://arcg.is/4raiq0">Submit Report</a> 
+    <a href="https://arcg.is/4raiq0" class="addRecordBtn">Submit Report</a>
     
     <div id="viewDiv"></div>
 
