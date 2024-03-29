@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>Search widget with custom source | Sample | ArcGIS Maps SDK for JavaScript 4.29</title>
+    <title>GIS4102C Midterm - Marine Pollution Reports</title>
 
     <style>
       html,
@@ -28,9 +28,8 @@
         cursor: pointer;
         text-decoration: none;
       }
-
-      .addRecordBtn:hover {
-        background-color: #005a87;
+        .addRecordBtn:hover {
+          background-color: #005a87;
       }
     </style>
 
@@ -63,17 +62,17 @@
       ) => {
 
         // An open data address search API for France. Spent too much time trying to find a free API for the US :(
-        const url = "https://api-adresse.data.gouv.fr/";
+        const url = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress";
 
         const map = new Map({
-          basemap: "satellite"
+          basemap: "topographic"
         });
 
         // *********** CHALLENGE 1: Create center and zoom *************
         const view = new MapView({
           container: "viewDiv",
           map: map,
-          center: [2.29, 48.86], // lon, lat
+          center: [-80.2, 25.7], // lon, lat
           zoom: 13
         });
 
@@ -88,13 +87,13 @@
         // Create featurelayer from feature service 
         const layer = new FeatureLayer({ 
                   // URL to the service 
-                  url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/survey123_5c8d9cbdfd06451cbac027e3a570c987_results/FeatureServer"
+                  url: "https://atoll.floridamarine.org/arcgis/rest/services/Projects_FWC/FishKills_forDEP_WQDashboard/FeatureServer/1"
                 });
         
         map.add(layer);
 
         const customSearchSource = new SearchSource({
-          placeholder: "example:  75001 Paris, France",
+          placeholder: "example:  3350 Biscayne Blvd",
           // Provide a getSuggestions method to provide suggestions to the Search widget
           getSuggestions: (params) => {
             // You can request data from a
@@ -171,7 +170,6 @@
           }
         });
 
-        // *********** CHALLENGE 2: Create Search widget and modify its appearance *************
         // Create Search widget using custom SearchSource
         const searchWidget = new Search({
           view: view,
@@ -189,8 +187,8 @@
   </head>
 
   <body>
-
-    <a href="https://arcg.is/vzmr80">Add Record</a>
+    <!-- Below is link to Survey123 pollution form and will show an 'Add Record' button to user -->
+    <a href="https://arcg.is/4raiq0">Submit Report</a> 
     
     <div id="viewDiv"></div>
 
