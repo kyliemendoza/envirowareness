@@ -20,7 +20,7 @@
     z-index: 10;
     top: 10px;
     right: 10px;
-    background-color: #355c3e;
+    background-color: #2d4e35;
     color: white;
     padding: 8px 16px;
     border: none;
@@ -34,9 +34,9 @@
       }
   
      </style>
-
-    <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css" />
-    <script src="https://js.arcgis.com/4.29/"></script>
+    
+  <link rel="stylesheet" href="https://js.arcgis.com/4.19/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.19/"></script>
 
     <script>
       require([
@@ -86,30 +86,20 @@
     // Add the county lines layer to the map
     map.add(countyLinesLayer);
 
-      // Create a new instance of the ScaleBar widget
-      const scaleBar = new ScaleBar({
-        view: view,
-        unit: "dual" // The scale bar displays both metric and non-metric units.
-      });
-
-      // Add the ScaleBar widget to the bottom-left corner of the map view
-      view.ui.add(scaleBar, {
-        position: "bottom-left"
-      });
-
       // Defining a popup template for the FishKill Feature Layer
       const fishKillPopupTemplate = {
         title: "<i><b>Event:</b> {Event}<br></i>",
-        content: "<b>Species:</b> {Species}<br><b>Suspected Cause:</b> {SuspectedCause}<br><b>Date Of Call:</b> {DateOfCall}<br>"
+        // content: "<b>Species:</b> {Species}<br><b>Suspected Cause:</b> {SuspectedCause}<br><b>Date Of Call:</b> {DateOfCall}<br>"
       };
 
       // Adding Fish Kill featurelayer from feature service
-      const FishKill = new FeatureLayer({ 
-        url: "https://atoll.floridamarine.org/arcgis/rest/services/Projects_FWC/FishKills_forDEP_WQDashboard/FeatureServer/1",
-        title: "Fish Kill Reports",
-        outFields: ["Species","SuspectedCause", "DateOfCall"],
-        popupTemplate: fishKillPopupTemplate
-      });
+     const FishKill = new FeatureLayer({ 
+          url: "https://atoll.floridamarine.org/arcgis/rest/services/Projects_FWC/FishKills_forDEP_WQDashboard/FeatureServer",
+          title: "Fish Kill Reports",
+          // outfields: ["Species","SuspectedCause", "DateOfCall"],
+          popuptemplate: fishKillPopupTemplate
+         });
+
 
       // Defining a popup template for the AlgalBloom Feature Layer
       const algalBloomPopupTemplate = {
@@ -119,9 +109,9 @@
 
       // Adding Algal Bloom featurelayer from feature service
       const AlgalBloom = new FeatureLayer({ 
-        url: "https://services1.arcgis.com/nRHtyn3uE1kyzoYc/arcgis/rest/services/AlgalBloom_Final_View/FeatureServer/0",
+        url: "https://services9.arcgis.com/RHVPKKiFTONKtxq3/ArcGIS/rest/services/NWS_Watches_Warnings_v1/FeatureServer/11",
         title: "Algal Bloom Reports",
-        outFields: ["BloomObserved","AlgalIDResult","SampleDateTime"],
+        // outFields: ["BloomObserved", "AlgalIDResult", "SampleDateTime"],
         popupTemplate: algalBloomPopupTemplate
       });
 
@@ -142,6 +132,17 @@
 
       // Adding the important feature layers to the map
       map.addMany([FishKill, AlgalBloom, MarineSurvey]);
+
+    // Create a new instance of the ScaleBar widget
+    const scaleBar = new ScaleBar({
+        view: view,
+        unit: "dual" // The scale bar displays both metric and non-metric units.
+      });
+
+      // Add the ScaleBar widget to the bottom-left corner of the map view
+      view.ui.add(scaleBar, {
+        position: "bottom-left"
+      });
 
       // Creating and adding the search widget for the map
       const searchWidget = new Search({
