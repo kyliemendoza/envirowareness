@@ -8,67 +8,65 @@
       html,
       body,
       #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
+       padding: 0;
+       margin: 0;
+       height: 100%;
+       width: 100%;
       }
-      /* Adding CSS for survey button */
+   
+       /* Setting the style of the button */
       .addRecordBtn {
-        position: absolute;
-        z-index: 10;
-        top: 10px;
-        right: 10px;
-        background-color:#0079c1;
-        color: white;
-        padding: 8px 16px;
-        border: none;
-        border-radius: 4px;
-        font-size: 14px;
-        cursor: pointer;
-        text-decoration: none;
+    position: absolute;
+    z-index: 10;
+    top: 10px;
+    right: 10px;
+    background-color: #355c3e;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
       }
-        .addRecordBtn:hover {
-          background-color: #005a87;
+      .addRecordBtn:hover {
+       background-color: #005a87;
       }
-    </style>
+  
+     </style>
 
     <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css" />
     <script src="https://js.arcgis.com/4.29/"></script>
 
     <script>
       require([
-      "esri/config",
-      "esri/Map",
-      "esri/Graphic",
-      "esri/request",
-      "esri/views/MapView",
-      "esri/widgets/Search",
-      "esri/widgets/Locate",
-      "esri/widgets/Search/SearchSource",
-      "esri/geometry/geometryEngine",
-      "esri/geometry/Point",
-      "esri/layers/FeatureLayer"
-      ], (
-        esriconfig,
-        Map,
-        Graphic,
-        esriRequest,
-        MapView,
-        Search,
-        Locate,
-        SearchSource,
-        geometryEngine,
-        Point,
-        FeatureLayer
-      ) => {
+        "esri/config", 
+        "esri/Map", 
+        "esri/views/MapView", 
+        "esri/layers/ImageryLayer", 
+        "esri/layers/FeatureLayer", 
+        "esri/widgets/Legend", 
+        "esri/widgets/Search", 
+        "esri/widgets/ScaleBar", 
+        "esri/widgets/LayerList", 
+        "esri/widgets/Expand"], 
+        (esriConfig, 
+        Map, 
+        MapView, 
+        ImageryLayer, 
+        FeatureLayer, 
+        Legend, 
+        Search, 
+        ScaleBar, 
+        LayerList, 
+        Expand) => {
 
       // Set the API key for the ArcGIS API for JavaScript
-        esriConfig.apiKey = "AAPK9c89b2be3b2847e5855098989dee99b2ti5ZLtJOzNptY3_yhg1lc2nqbYUD8RuNm4u3-LVBPsb_GdnzndOpiPIEc8_lM4bG";
+        esriConfig.apiKey = "AAPK7ec55599150b4a308e2cb5b3061951d0V031QmsxPbZowhaXDBb_7KJn4HhUyXv5Qxgp0vWFkAt5dqtugb17cRGjdusqdg6e";
 
         const map = new Map({
-          basemap: "arcgis-topographic"
-        });
+          basemap: "topographic"
+         });
 
         const view = new MapView({
           container: "viewDiv",
@@ -77,62 +75,55 @@
           zoom: 13
         });
 
-        const locateBtn = new Locate({ // Add the locate widget to the view
-              view: view
-            });
+      // Adding Fish Kill featurelayer from feature service
+        const FishKill = new FeatureLayer({ 
+          url: "https://atoll.floridamarine.org/arcgis/rest/services/Projects_FWC/FishKills_forDEP_WQDashboard/FeatureServer/1",
+          title: "Fish Kill Reports",
+          outfields: ["Species","SuspectedCause", "DateOfCall"],
+          popuptemplate: popuptemplate
+         });
 
-          view.ui.add(locateBtn, { // Add the locate widget to the top left corner of the view
-            position: "top-left"
-            });
+      // Adding Algal Bloom featurelayer from feature service
+        const AlgalBloom = new FeatureLayer({ 
+          url: "https://services1.arcgis.com/nRHtyn3uE1kyzoYc/arcgis/rest/services/AlgalBloom_Final_View/FeatureServer/0",
+          title: "Algal Bloom Reports",
+          outfields: ["BloomObserved","AlgalIDResult","SampleDateTime"],
+          popuptemplate: popuptemplate
+        });
 
-        // Adding Fish Kill featurelayer from feature service
-          const FishKill = new FeatureLayer({ 
-            url: "https://atoll.floridamarine.org/arcgis/rest/services/Projects_FWC/FishKills_forDEP_WQDashboard/FeatureServer/1",
-            title: "Fish Kill Reports",
-            outfields: ["Species","SuspectedCause", "DateOfCall"],
-            popuptemplate: popuptemplate
-              });
-          
-            map.add(FishKill);
+      // Constructing the popup survey for marking marine pollution    
+        const popupSurvey = {
+          title: "<i>Marine Pollution Report</i>",
+          content: "<b>Name:</b> {name}<br><b>Date:</b> {_date}<br><b>Time:</b> {time}<br>"
+        }
 
-        // Adding Algal Bloom featurelayer from feature service
-          const AlgalBloom = new FeatureLayer({ 
-            url: "https://services1.arcgis.com/nRHtyn3uE1kyzoYc/arcgis/rest/services/AlgalBloom_Final_View/FeatureServer/0",
-            title: "Algal Bloom Reports",
-            outfields: ["BloomObserved","AlgalIDResult","SampleDateTime"],
-            popuptemplate: popuptemplate
-            });
-          
-            map.add(AlgalBloom);
+      // Adding the Safety Survey feature layer from the survey123 results
+        const MarineSurvey = new FeatureLayer({
+          url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/survey123_d9a7dbeca58d4d7abb07500bad1eff47_results/FeatureServer",
+          title: "Marine Pollution Report Survey",
+          renderer: SurveyRenderer,
+          outFields: ["type_of_incident","date_and_time_of_sighting", "any_wildlife_injured_or_killed_","types_of_wildlife_affected"],
+          popupTemplate: popupSurvey
+        });
 
-    // Constructing the popup survey for marking marine pollution    
-const popupSurvey = {
-  title: "<i>Marine Pollution Report</i>",
-  content: "<b>Name:</b> {name}<br><b>Date:</b> {_date}<br><b>Time:</b> {time}<br>"
-}
+      // Adding the important feature layers to the map
+        map.addMany([FishKill, AlgalBloom, MarineSurvey]);
 
-// Adding the Safety Survey feature layer from the survey123 results
-const MarineSurvey = new FeatureLayer({
-  url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/survey123_d9a7dbeca58d4d7abb07500bad1eff47_results/FeatureServer",
-  title: "Marine Pollution Report Survey",
-  renderer: SurveyRenderer,
-  outFields: ["type_of_incident","date_and_time_of_sighting", "any_wildlife_injured_or_killed_","types_of_wildlife_affected"],
-  popupTemplate: popupSurvey
-});
-
-// Adding the important feature layers to the map
-map.addMany([FishKill, AlgalBloom, MarineSurvey]);
-
-        // Create Search widget using custom SearchSource
+      // Create Search widget using custom SearchSource
         const searchWidget = new Search({
           view: view,
           sources: [ customSearchSource ],
           includeDefaultSources: false
         });
 
-        // Add the search widget to the top left corner of the view
+      // Add the search widget to the top left corner of the view
         view.ui.add(searchWidget, {
-          position: "top-right"
+         position: "top-right"
+        });
+
+      // Creating the LayerList widget
+        let layerList = new LayerList({
+          view: view
         });
       });
     </script>
