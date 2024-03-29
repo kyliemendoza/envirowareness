@@ -62,69 +62,117 @@
         Expand) => {
 
       // Set the API key for the ArcGIS API for JavaScript
-        esriConfig.apiKey = "AAPK7ec55599150b4a308e2cb5b3061951d0V031QmsxPbZowhaXDBb_7KJn4HhUyXv5Qxgp0vWFkAt5dqtugb17cRGjdusqdg6e";
+      esriConfig.apiKey = "AAPK7ec55599150b4a308e2cb5b3061951d0V031QmsxPbZowhaXDBb_7KJn4HhUyXv5Qxgp0vWFkAt5dqtugb17cRGjdusqdg6e";
 
-        const map = new Map({
-          basemap: "topographic"
-         });
-
-        const view = new MapView({
-          container: "viewDiv",
-          map: map,
-          center: [-80.2, 25.7], // lon, lat
-          zoom: 13
+      const map = new Map({
+        basemap: "arcgis-topographic"
         });
+
+      const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [-80.2, 25.7], // lon, lat
+        zoom: 13
+      });
+
+      // Defining a popup template for the FishKill Feature Layer
+      const fishKillPopupTemplate = {
+        title: "<i><b>Event:</b> {Event}<br></i>",
+        content: "<b>Species:</b> {Species}<br><b>Suspected Cause:</b> {SuspectedCause}<br><b>Date Of Call:</b> {DateOfCall}<br>"
+      };
 
       // Adding Fish Kill featurelayer from feature service
-        const FishKill = new FeatureLayer({ 
-          url: "https://atoll.floridamarine.org/arcgis/rest/services/Projects_FWC/FishKills_forDEP_WQDashboard/FeatureServer/1",
-          title: "Fish Kill Reports",
-          outfields: ["Species","SuspectedCause", "DateOfCall"],
-          popuptemplate: popuptemplate
-         });
+      const FishKill = new FeatureLayer({ 
+        url: "https://atoll.floridamarine.org/arcgis/rest/services/Projects_FWC/FishKills_forDEP_WQDashboard/FeatureServer/1",
+        title: "Fish Kill Reports",
+        outFields: ["Species","SuspectedCause", "DateOfCall"],
+        popupTemplate: fishKillPopupTemplate
+      });
+
+      // Defining a popup template for the AlgalBloom Feature Layer
+      const algalBloomPopupTemplate = {
+        title: "<i><b>Event:</b> {Event}<br></i>",
+        content: "<b>Bloom Observed:</b> {BloomObserved}<br><b>Algal ID Result:</b> {AlgalIDResult}<br><b>Sample Date Time:</b> {SampleDateTime}<br>"
+      };
 
       // Adding Algal Bloom featurelayer from feature service
-        const AlgalBloom = new FeatureLayer({ 
-          url: "https://services1.arcgis.com/nRHtyn3uE1kyzoYc/arcgis/rest/services/AlgalBloom_Final_View/FeatureServer/0",
-          title: "Algal Bloom Reports",
-          outfields: ["BloomObserved","AlgalIDResult","SampleDateTime"],
-          popuptemplate: popuptemplate
-        });
+      const AlgalBloom = new FeatureLayer({ 
+        url: "https://services1.arcgis.com/nRHtyn3uE1kyzoYc/arcgis/rest/services/AlgalBloom_Final_View/FeatureServer/0",
+        title: "Algal Bloom Reports",
+        outFields: ["BloomObserved","AlgalIDResult","SampleDateTime"],
+        popupTemplate: algalBloomPopupTemplate
+      });
 
       // Constructing the popup survey for marking marine pollution    
-        const popupSurvey = {
-          title: "<i>Marine Pollution Report</i>",
-          content: "<b>Name:</b> {name}<br><b>Date:</b> {_date}<br><b>Time:</b> {time}<br>"
-        }
+      const popupSurvey = {
+        title: "<i>Marine Pollution Report</i>",
+        content: "<b>Name:</b> {name}<br><b>Date:</b> {_date}<br><b>Time:</b> {time}<br>"
+      }
 
-      // Adding the Safety Survey feature layer from the survey123 results
-        const MarineSurvey = new FeatureLayer({
-          url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/survey123_d9a7dbeca58d4d7abb07500bad1eff47_results/FeatureServer",
-          title: "Marine Pollution Report Survey",
-          renderer: SurveyRenderer,
-          outFields: ["type_of_incident","date_and_time_of_sighting", "any_wildlife_injured_or_killed_","types_of_wildlife_affected"],
-          popupTemplate: popupSurvey
-        });
+      // Adding the Safety Survey feature layer from the Survey123 results
+      const MarineSurvey = new FeatureLayer({
+        url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/survey123_d9a7dbeca58d4d7abb07500bad1eff47_results/FeatureServer",
+        title: "Marine Pollution Report Survey",
+        renderer: SurveyRenderer,
+        outFields: ["type_of_incident","date_and_time_of_sighting", "any_wildlife_injured_or_killed_","types_of_wildlife_affected"],
+        popupTemplate: popupSurvey
+      });
 
       // Adding the important feature layers to the map
-        map.addMany([FishKill, AlgalBloom, MarineSurvey]);
+      map.addMany([FishKill, AlgalBloom, MarineSurvey]);
 
-      // Create Search widget using custom SearchSource
-        const searchWidget = new Search({
-          view: view,
-          sources: [ customSearchSource ],
-          includeDefaultSources: false
-        });
+      // Creating and adding the search widget for the map
+      const searchWidget = new Search({
+        view: view
+      });
 
-      // Add the search widget to the top left corner of the view
-        view.ui.add(searchWidget, {
-         position: "top-right"
-        });
+      // Adding the search widget to the map
+      view.ui.add(searchWidget, {
+        position: "top-left",
+        index: 2
+      });
 
       // Creating the LayerList widget
-        let layerList = new LayerList({
-          view: view
-        });
+      let layerList = new LayerList({
+        view: view
+      });
+
+      // Creating the Expand widget and wrapping the LayerList widget inside it
+      let layerListExpand = new Expand({
+        view: view,
+        content: layerList,
+        expandTooltip: "Expand Layer List",
+        collapseTooltip: "Collapse Layer List",
+        autoCollapse: true
+      });
+
+      // Adding the Expand widget for the map
+      view.ui.add(layerListExpand, {
+        position: "top-left"
+       });
+
+      // Create a new instance of the Legend widget
+      const legend = new Legend({
+        view: view,
+        layerInfos: [
+          { layer: FishKill, title: 'Fish Kill Reports' },
+          { layer: AlgalBloom, title: 'Algal Bloom Reports' },
+          { layer: MarineSurvey, title: 'Marine Pollution Report Survey' }
+        ]
+      });
+
+      // Create the Expand widget for the Legend
+      let legendExpand = new Expand({
+        view: view,
+        content: legend,
+        expandTooltip: "Expand Legend",
+        collapseTooltip: "Collapse Legend",
+        autoCollapse: true // Automatically collapse the legend when another widget is opened
+      });
+
+      // Add the Legend widget to the top-right corner of the map view
+      view.ui.add(legend, 'top-right');
+
       });
     </script>
 
