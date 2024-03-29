@@ -38,6 +38,7 @@
 
     <script>
       require([
+      "esri/config",
       "esri/Map",
       "esri/Graphic",
       "esri/request",
@@ -49,6 +50,7 @@
       "esri/geometry/Point",
       "esri/layers/FeatureLayer"
       ], (
+        esriconfig,
         Map,
         Graphic,
         esriRequest,
@@ -61,11 +63,23 @@
         FeatureLayer
       ) => {
 
+        // Set the API key for the ArcGIS API for JavaScript
+         esriConfig.apiKey = "AAPK9c89b2be3b2847e5855098989dee99b2ti5ZLtJOzNptY3_yhg1lc2nqbYUD8RuNm4u3-LVBPsb_GdnzndOpiPIEc8_lM4bG";
+               
         // An open data address search API for France. Spent too much time trying to find a free API for the US :(
         const url = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress";
 
+        const searchAddress = (address) => {
+          const formattedAddress = address.replace(/ /g, '+');
+          return `${url}?address=${formattedAddress}&benchmark=Public_AR_Census2010&format=json`;
+        };
+
+        // Use the function like this:
+        const address = "1600 Pennsylvania Ave NW Washington DC";
+        const requestUrl = searchAddress(address);
+
         const map = new Map({
-          basemap: "topographic"
+          basemap: "arcgis-topographic"
         });
 
         // *********** CHALLENGE 1: Create center and zoom *************
@@ -84,13 +98,21 @@
             position: "top-left"
             });
 
-        // Create featurelayer from feature service 
-        const layer = new FeatureLayer({ 
-                  // URL to the service 
-                  url: "https://atoll.floridamarine.org/arcgis/rest/services/Projects_FWC/FishKills_forDEP_WQDashboard/FeatureServer/1"
-                });
+        // Adding Fish Kill featurelayer from feature service
+        const FishKill = new FeatureLayer({ 
+           url: "https://atoll.floridamarine.org/arcgis/rest/services/Projects_FWC/FishKills_forDEP_WQDashboard/FeatureServer/1",
+           title: "Fish Kill Reports"
+            });
         
-        map.add(layer);
+          map.add(layer);
+
+        // Adding Algal Bloom featurelayer from feature service
+        const AlgalBloom = new FeatureLayer({ 
+          url: "https://services1.arcgis.com/nRHtyn3uE1kyzoYc/arcgis/rest/services/AlgalBloom_Final_View/FeatureServer/0",
+          title: "Algal Bloom Reports"
+           });
+        
+          map.add(layer);
 
         const customSearchSource = new SearchSource({
           placeholder: "example:  3350 Biscayne Blvd",
