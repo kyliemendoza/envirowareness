@@ -49,8 +49,11 @@
         "esri/widgets/Search", 
         "esri/widgets/ScaleBar", 
         "esri/widgets/LayerList", 
-        "esri/widgets/Expand"], 
-        (esriConfig, 
+        "esri/widgets/Expand",
+        "esri/layers/TileLayer",
+        "esri/Basemap"
+      ], function(
+        esriConfig, 
         Map, 
         MapView, 
         ImageryLayer, 
@@ -59,20 +62,51 @@
         Search, 
         ScaleBar, 
         LayerList, 
-        Expand) => {
+        Expand,
+        TileLayer,
+        Basemap
+      ) {
 
       // Set the API key for the ArcGIS API for JavaScript
       esriConfig.apiKey = "AAPK7ec55599150b4a308e2cb5b3061951d0V031QmsxPbZowhaXDBb_7KJn4HhUyXv5Qxgp0vWFkAt5dqtugb17cRGjdusqdg6e";
 
+      const tileLayer = new TileLayer({
+        url: "https://utility.arcgis.com/usrsvcs/servers/f4c609cfc8f346f5ae10925fd5b8550c/rest/services/Canvas/World_Light_Gray_Base/MapServer"
+      });
+
+      const customBasemap = new Basemap({
+        baseLayers: [tileLayer]
+      });
+
       const map = new Map({
-        basemap: "arcgis-topographic"
-        });
+        basemap: customBasemap
+      });
 
       const view = new MapView({
         container: "viewDiv",
         map: map,
         center: [-80.2, 25.7], // lon, lat
         zoom: 13
+      });
+
+    // Create a new instance of the FeatureLayer class with the URL of the county lines layer
+    const countyLinesLayer = new FeatureLayer({
+      url: "https://www45.swfwmd.state.fl.us/arcgis12/rest/services/OpenData/Boundaries/MapServer/1",
+      title: "County Lines"
+    });
+
+    // Add the county lines layer to the map
+    map.add(countyLinesLayer);
+
+      // Create a new instance of the ScaleBar widget
+      const scaleBar = new ScaleBar({
+        view: view,
+        unit: "dual" // The scale bar displays both metric and non-metric units.
+      });
+
+      // Add the ScaleBar widget to the bottom-left corner of the map view
+      view.ui.add(scaleBar, {
+        position: "bottom-left"
       });
 
       // Defining a popup template for the FishKill Feature Layer
