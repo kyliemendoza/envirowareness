@@ -65,18 +65,6 @@
 
       // Set the API key for the ArcGIS API for JavaScript
         esriConfig.apiKey = "AAPK9c89b2be3b2847e5855098989dee99b2ti5ZLtJOzNptY3_yhg1lc2nqbYUD8RuNm4u3-LVBPsb_GdnzndOpiPIEc8_lM4bG";
-               
-      // An open data address search API for France. Spent too much time trying to find a free API for the US :(
-        const url = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress";
-
-        const searchAddress = (address) => {
-          const formattedAddress = address.replace(/ /g, '+');
-          return `${url}?address=${formattedAddress}&benchmark=Public_AR_Census2010&format=json`;
-        };
-
-        // Use the function like this:
-        const address = "1600 Pennsylvania Ave NW Washington DC";
-        const requestUrl = searchAddress(address);
 
         const map = new Map({
           basemap: "arcgis-topographic"
