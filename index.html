@@ -35,8 +35,8 @@
   
      </style>
     
-  <link rel="stylesheet" href="https://js.arcgis.com/4.19/esri/themes/light/main.css">
-  <script src="https://js.arcgis.com/4.19/"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.29/"></script>
 
     <script>
       require([
@@ -83,8 +83,9 @@
       title: "County Lines"
     });
 
+    // /////////////////////////////////////////////////////////////////////
     // Add the county lines layer to the map
-    map.add(countyLinesLayer);
+    // map.add(countyLinesLayer);
 
     // Defining a popup template for the fishkill Feature Layer
     const fishkillPopupTemplate = {
@@ -102,8 +103,9 @@
       outFields: ["DateOfCall", "KillCity", "Species","SuspectedCause", "WaterBodyName"],
       popupTemplate: fishkillPopupTemplate
     });
-      map.add(fishkill);
+      // map.add(fishkill);
 
+    // /////////////////////////////////////////////////////////////////////
     // Defining a popup template for the AlgalBloom Feature Layer
     const algalbloomPopupTemplate = {
       title: "<i><b>Event:</b> Algal Bloom <br></i>",
@@ -119,8 +121,9 @@
       outFields: ["BloomObserved", "AlgalIDResult", "County", "SampleDateTime"],
       popupTemplate: algalbloomPopupTemplate
     });
-      map.add(algalbloom);
+      // map.add(algalbloom);
 
+    // /////////////////////////////////////////////////////////////////////
     // Constructing the popup survey for marking marine pollution    
     const popupSurvey = {
       title: "<i>Marine Pollution Report</i>",
@@ -135,7 +138,8 @@
     });
 
     // Adding the important feature layers to the map
-      map.add(marinesurvey);
+      // map.add(marinesurvey);
+      map.addMany([countyLinesLayer, fishkill, algalbloom, marinesurvey]);
 
     // Create a new instance of the ScaleBar widget
     const scaleBar = new ScaleBar({
