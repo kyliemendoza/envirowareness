@@ -96,12 +96,13 @@
 
       // Adding Fish Kill featurelayer from feature service
      const FishKill = new FeatureLayer({ 
-          url: "https://atoll.floridamarine.org/arcgis/rest/services/Projects_FWC/FishKills_forDEP_WQDashboard/FeatureServer",
+          url: "https://atoll.floridamarine.org/arcgis/rest/services/Projects_FWC/FishKills_forDEP_WQDashboard/FeatureServer/1",
           title: "Fish Kill Reports",
-          // outfields: ["Species","SuspectedCause", "DateOfCall"],
+          outfields: ["Species","SuspectedCause","DateOfCall"],
           popuptemplate: fishKillPopupTemplate
          });
-
+        
+      map.add(FishKill);
 
       // Defining a popup template for the AlgalBloom Feature Layer
       const algalBloomPopupTemplate = {
@@ -133,7 +134,7 @@
       });
 
       // Adding the important feature layers to the map
-      map.addMany([FishKill, AlgalBloom, MarineSurvey]);
+      // map.addMany([FishKill, AlgalBloom, MarineSurvey]);
 
     // Create a new instance of the ScaleBar widget
     const scaleBar = new ScaleBar({
