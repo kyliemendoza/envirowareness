@@ -189,7 +189,8 @@
           { layer: fishkill, title: 'Fish Kill Reports' },
           { layer: algalbloom, title: 'Algal Bloom Reports' },
           { layer: marinesurvey, title: 'Marine Pollution Report Survey' }
-        ]
+        ],
+        position: "bottom-right"
       });
 
       // Create the Expand widget for the Legend
@@ -202,7 +203,7 @@
       });
 
       // Add the Legend widget to the top-right corner of the map view
-      view.ui.add(legend, 'top-right');
+      view.ui.add(legend, 'bottom-right');
       });
     </script>
 
