@@ -44,7 +44,9 @@
         "esri/Map", 
         "esri/views/MapView", 
         "esri/layers/ImageryLayer", 
-        "esri/layers/FeatureLayer", 
+        "esri/layers/FeatureLayer",
+        // "esri/renderers/SimpleRenderer",
+        // "esri/symbols/SimpleMarkerSymbol", 
         "esri/widgets/Legend", 
         "esri/widgets/Search", 
         "esri/widgets/ScaleBar", 
@@ -55,7 +57,9 @@
         Map, 
         MapView, 
         ImageryLayer, 
-        FeatureLayer, 
+        FeatureLayer,
+        // SimpleRenderer,
+        // SimpleMarkerSymbol, 
         Legend, 
         Search, 
         ScaleBar, 
@@ -86,23 +90,37 @@
     // Add the county lines layer to the map
     map.add(countyLinesLayer);
 
-// Feature layers not appearing. Maybe not because I don't have setup icon for it so data can latch onto it? PNG saved. Test later today.
+    // // Create a new PictureMarkerSymbol with a URL to an image
+    // const symbol = new PictureMarkerSymbol({
+    //   url: "https://github.com/kyliemendoza/envirowareness/blob/main/fishkill.png",
+    //   width: "20px",
+    //   height: "20px"
+    // });
 
-      // Defining a popup template for the FishKill Feature Layer
-      const fishKillPopupTemplate = {
-        title: "<i><b>Event:</b> {Event}<br></i>",
-        // content: "<b>Species:</b> {Species}<br><b>Suspected Cause:</b> {SuspectedCause}<br><b>Date Of Call:</b> {DateOfCall}<br>"
-      };
+    // // Create a new SimpleRenderer with the PictureMarkerSymbol
+    // const renderer = new SimpleRenderer({
+    //   symbol: symbol
+    // });
 
-      // Adding Fish Kill featurelayer from feature service
-     const FishKill = new FeatureLayer({ 
-          url: "https://atoll.floridamarine.org/arcgis/rest/services/Projects_FWC/FishKills_forDEP_WQDashboard/FeatureServer/1",
-          title: "Fish Kill Reports",
-          outfields: ["Species","SuspectedCause","DateOfCall"],
-          popuptemplate: fishKillPopupTemplate
-         });
-        
-      map.add(FishKill);
+    // Defining a popup template for the FishKill Feature Layer
+    const fishKillPopupTemplate = {
+      title: "<i><b>Event:</b> Fish Kill <br></i>",
+      content: "<b>Date Of Call:</b> {DateOfCall}<br>" +
+               "<b>City:</b> {KillCity}<br>" +
+               "<b>Species:</b> {Species}<br>" +
+               "<b>Suspected Cause:</b> {SuspectedCause}<br>" +
+               "<b>Water Body Name:</b> {WaterBodyName}<br>"
+    };
+
+    // Adding Fish Kill featurelayer from feature service
+    const fishkill = new FeatureLayer({ 
+      url: "https://atoll.floridamarine.org/arcgis/rest/services/Projects_FWC/FishKills_forDEP_WQDashboard/FeatureServer/1",
+      title: "Fish Kill Reports",
+      outFields: ["DateOfCall", "KillCity", "Species","SuspectedCause", "WaterBodyName"],
+      popupTemplate: fishKillPopupTemplate
+    });
+
+      map.add(fishkill);
 
       // Defining a popup template for the AlgalBloom Feature Layer
       const algalBloomPopupTemplate = {
