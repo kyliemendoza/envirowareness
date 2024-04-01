@@ -102,8 +102,8 @@
     //   symbol: symbol
     // });
 
-    // Defining a popup template for the FishKill Feature Layer
-    const fishKillPopupTemplate = {
+    // Defining a popup template for the fishkill Feature Layer
+    const fishkillPopupTemplate = {
       title: "<i><b>Event:</b> Fish Kill <br></i>",
       content: "<b>Date Of Call:</b> {DateOfCall}<br>" +
                "<b>City:</b> {KillCity}<br>" +
@@ -111,48 +111,48 @@
                "<b>Suspected Cause:</b> {SuspectedCause}<br>" +
                "<b>Water Body Name:</b> {WaterBodyName}<br>"
     };
-
     // Adding Fish Kill featurelayer from feature service
     const fishkill = new FeatureLayer({ 
       url: "https://atoll.floridamarine.org/arcgis/rest/services/Projects_FWC/FishKills_forDEP_WQDashboard/FeatureServer/1",
       title: "Fish Kill Reports",
       outFields: ["DateOfCall", "KillCity", "Species","SuspectedCause", "WaterBodyName"],
-      popupTemplate: fishKillPopupTemplate
+      popupTemplate: fishkillPopupTemplate
     });
-
       map.add(fishkill);
 
-      // Defining a popup template for the AlgalBloom Feature Layer
-      const algalBloomPopupTemplate = {
-        title: "<i><b>Event:</b> {Event}<br></i>",
-        content: "<b>Bloom Observed:</b> {BloomObserved}<br><b>Algal ID Result:</b> {AlgalIDResult}<br><b>Sample Date Time:</b> {SampleDateTime}<br>"
-      };
+    // Defining a popup template for the AlgalBloom Feature Layer
+    const algalbloomPopupTemplate = {
+      title: "<i><b>Event:</b> Algal Bloom <br></i>",
+      content: "<b>Bloom Observed:</b> {BloomObserved}<br>" +
+               "<b>Algal ID Result:</b> {AlgalIDResult}<br>" +
+               "<b>County:</b> {County}<br>" +
+               "<b>Sample Date Time:</b> {SampleDateTime}<br>"
+    };
+    // Adding Algal Bloom featurelayer from feature service
+    const algalbloom = new FeatureLayer({ 
+      url: "https://services1.arcgis.com/nRHtyn3uE1kyzoYc/ArcGIS/rest/services/AlgalBloom_Final_View/FeatureServer/0",
+      title: "Algal Bloom Reports",
+      outFields: ["BloomObserved", "AlgalIDResult", "County", "SampleDateTime"],
+      popupTemplate: algalbloomPopupTemplate
+    });
+      map.add(algalbloom);
 
-      // Adding Algal Bloom featurelayer from feature service
-      const AlgalBloom = new FeatureLayer({ 
-        url: "https://services9.arcgis.com/RHVPKKiFTONKtxq3/ArcGIS/rest/services/NWS_Watches_Warnings_v1/FeatureServer/11",
-        title: "Algal Bloom Reports",
-        // outFields: ["BloomObserved", "AlgalIDResult", "SampleDateTime"],
-        popupTemplate: algalBloomPopupTemplate
-      });
+    // Constructing the popup survey for marking marine pollution    
+    const popupSurvey = {
+      title: "<i>Marine Pollution Report</i>",
+      content: "<b>Name:</b> {name}<br><b>Date:</b> {_date}<br><b>Time:</b> {time}<br>"
+    }
+    // Adding the Safety Survey feature layer from the Survey123 results
+    const marinesurvey = new FeatureLayer({
+      url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/survey123_d9a7dbeca58d4d7abb07500bad1eff47_results/FeatureServer",
+      title: "Marine Pollution Report Survey",
+      renderer: SurveyRenderer,
+      outFields: ["type_of_incident","date_and_time_of_sighting", "any_wildlife_injured_or_killed_","types_of_wildlife_affected"],
+      popupTemplate: popupSurvey
+    });
 
-      // Constructing the popup survey for marking marine pollution    
-      const popupSurvey = {
-        title: "<i>Marine Pollution Report</i>",
-        content: "<b>Name:</b> {name}<br><b>Date:</b> {_date}<br><b>Time:</b> {time}<br>"
-      }
-
-      // Adding the Safety Survey feature layer from the Survey123 results
-      const MarineSurvey = new FeatureLayer({
-        url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/survey123_d9a7dbeca58d4d7abb07500bad1eff47_results/FeatureServer",
-        title: "Marine Pollution Report Survey",
-        renderer: SurveyRenderer,
-        outFields: ["type_of_incident","date_and_time_of_sighting", "any_wildlife_injured_or_killed_","types_of_wildlife_affected"],
-        popupTemplate: popupSurvey
-      });
-
-      // Adding the important feature layers to the map
-      // map.addMany([FishKill, AlgalBloom, MarineSurvey]);
+    // Adding the important feature layers to the map
+      map.add([marinesurvey]);
 
     // Create a new instance of the ScaleBar widget
     const scaleBar = new ScaleBar({
@@ -199,9 +199,9 @@
       const legend = new Legend({
         view: view,
         layerInfos: [
-          { layer: FishKill, title: 'Fish Kill Reports' },
-          { layer: AlgalBloom, title: 'Algal Bloom Reports' },
-          { layer: MarineSurvey, title: 'Marine Pollution Report Survey' }
+          { layer: fishkill, title: 'Fish Kill Reports' },
+          { layer: algalbloom, title: 'Algal Bloom Reports' },
+          { layer: marinesurvey, title: 'Marine Pollution Report Survey' }
         ]
       });
 
@@ -216,7 +216,6 @@
 
       // Add the Legend widget to the top-right corner of the map view
       view.ui.add(legend, 'top-right');
-
       });
     </script>
 
