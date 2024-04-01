@@ -77,8 +77,8 @@
       const view = new MapView({
         container: "viewDiv",
         map: map,
-        center: [-80.2, 25.7], // lon, lat
-        zoom: 13
+        center: [-80.1, 25.8], // lon, lat
+        zoom: 10
       });
 
     // Create a new instance of the FeatureLayer class with the URL of the county lines layer
@@ -146,7 +146,6 @@
     const marinesurvey = new FeatureLayer({
       url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/survey123_d9a7dbeca58d4d7abb07500bad1eff47_results/FeatureServer",
       title: "Marine Pollution Report Survey",
-      renderer: SurveyRenderer,
       outFields: ["type_of_incident","date_and_time_of_sighting", "any_wildlife_injured_or_killed_","types_of_wildlife_affected"],
       popupTemplate: popupSurvey
     });
