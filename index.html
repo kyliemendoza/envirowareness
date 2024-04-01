@@ -127,7 +127,10 @@
     // Constructing the popup survey for marking marine pollution    
     const popupSurvey = {
       title: "<i>Marine Pollution Report</i>",
-      content: "<b>Name:</b> {name}<br><b>Date:</b> {_date}<br><b>Time:</b> {time}<br>"
+      content: "<b>Type of Incident:</b> {type_of_incident}<br>" +
+               "<b>Date and Time of Sighting:</b> {date_and_time_of_sighting}<br>" +
+               "<b>Any Wildlife Injured or Killed:</b> {any_wildlife_injured_or_killed_}<br>" +
+               "<b>Types of Wildlife Affected:</b> {types_of_wildlife_affected}<br>"
     }
     // Adding the Safety Survey feature layer from the Survey123 results
     const marinesurvey = new FeatureLayer({
