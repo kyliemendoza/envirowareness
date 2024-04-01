@@ -45,8 +45,6 @@
         "esri/views/MapView", 
         "esri/layers/ImageryLayer", 
         "esri/layers/FeatureLayer",
-        // "esri/renderers/SimpleRenderer",
-        // "esri/symbols/SimpleMarkerSymbol", 
         "esri/widgets/Legend", 
         "esri/widgets/Search", 
         "esri/widgets/ScaleBar", 
@@ -58,8 +56,6 @@
         MapView, 
         ImageryLayer, 
         FeatureLayer,
-        // SimpleRenderer,
-        // SimpleMarkerSymbol, 
         Legend, 
         Search, 
         ScaleBar, 
@@ -89,18 +85,6 @@
 
     // Add the county lines layer to the map
     map.add(countyLinesLayer);
-
-    // // Create a new PictureMarkerSymbol with a URL to an image
-    // const symbol = new PictureMarkerSymbol({
-    //   url: "https://github.com/kyliemendoza/envirowareness/blob/main/fishkill.png",
-    //   width: "20px",
-    //   height: "20px"
-    // });
-
-    // // Create a new SimpleRenderer with the PictureMarkerSymbol
-    // const renderer = new SimpleRenderer({
-    //   symbol: symbol
-    // });
 
     // Defining a popup template for the fishkill Feature Layer
     const fishkillPopupTemplate = {
@@ -151,7 +135,7 @@
     });
 
     // Adding the important feature layers to the map
-      map.add([marinesurvey]);
+      map.add(marinesurvey);
 
     // Create a new instance of the ScaleBar widget
     const scaleBar = new ScaleBar({
