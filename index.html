@@ -78,15 +78,14 @@
       });
 
     // Create a new instance of the FeatureLayer class with the URL of the county lines layer
-    const countyLinesLayer = new FeatureLayer({
+    const countylineslayer = new FeatureLayer({
       url: "https://www45.swfwmd.state.fl.us/arcgis12/rest/services/OpenData/Boundaries/MapServer/1",
       title: "County Lines"
     });
+    // Add the county lines layer to the map
+    map.add(countylineslayer);
 
     // /////////////////////////////////////////////////////////////////////
-    // Add the county lines layer to the map
-    // map.add(countyLinesLayer);
-
     // Defining a popup template for the fishkill Feature Layer
     const fishkillPopupTemplate = {
       title: "<i><b>Event:</b> Fish Kill <br></i>",
@@ -103,7 +102,7 @@
       outFields: ["DateOfCall", "KillCity", "Species","SuspectedCause", "WaterBodyName"],
       popupTemplate: fishkillPopupTemplate
     });
-      // map.add(fishkill);
+      map.add(fishkill);
 
     // /////////////////////////////////////////////////////////////////////
     // Defining a popup template for the AlgalBloom Feature Layer
@@ -121,7 +120,7 @@
       outFields: ["BloomObserved", "AlgalIDResult", "County", "SampleDateTime"],
       popupTemplate: algalbloomPopupTemplate
     });
-      // map.add(algalbloom);
+      map.add(algalbloom);
 
     // /////////////////////////////////////////////////////////////////////
     // Constructing the popup survey for marking marine pollution    
@@ -141,8 +140,8 @@
     });
 
     // Adding the important feature layers to the map
-      // map.add(marinesurvey);
-      map.addMany([countyLinesLayer, fishkill, algalbloom, marinesurvey]);
+      map.add(marinesurvey);
+      // map.addMany([countylineslayer, fishkill, algalbloom, marinesurvey]);
 
     // Create a new instance of the ScaleBar widget
     const scaleBar = new ScaleBar({
