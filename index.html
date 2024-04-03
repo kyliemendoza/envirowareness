@@ -35,8 +35,8 @@
   
      </style>
     
-    <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css" />
-    <script src="https://js.arcgis.com/4.29/"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.26/"></script>
 
     <script>
       require([
@@ -77,14 +77,6 @@
         zoom: 10
       });
 
-    // Create a new instance of the FeatureLayer class with the URL of the county lines layer
-    const countylineslayer = new FeatureLayer({
-      url: "https://www45.swfwmd.state.fl.us/arcgis12/rest/services/OpenData/Boundaries/MapServer/1",
-      title: "County Lines"
-    });
-    // Add the county lines layer to the map
-    map.add(countylineslayer);
-
     // /////////////////////////////////////////////////////////////////////
     // Defining a popup template for the fishkill Feature Layer
     const fishkillPopupTemplate = {
@@ -102,7 +94,7 @@
       outFields: ["DateOfCall", "KillCity", "Species","SuspectedCause", "WaterBodyName"],
       popupTemplate: fishkillPopupTemplate
     });
-      map.add(fishkill);
+      map.add(fishkill, 0);
 
     // /////////////////////////////////////////////////////////////////////
     // Defining a popup template for the AlgalBloom Feature Layer
@@ -120,7 +112,7 @@
       outFields: ["BloomObserved", "AlgalIDResult", "County", "SampleDateTime"],
       popupTemplate: algalbloomPopupTemplate
     });
-      map.add(algalbloom);
+      map.add(algalbloom, 0);
 
     // /////////////////////////////////////////////////////////////////////
     // Constructing the popup survey for marking marine pollution    
@@ -138,10 +130,8 @@
       outFields: ["type_of_incident","date_and_time_of_sighting", "any_wildlife_injured_or_killed_","types_of_wildlife_affected"],
       popupTemplate: popupSurvey
     });
-
     // Adding the important feature layers to the map
-      map.add(marinesurvey);
-      // map.addMany([countylineslayer, fishkill, algalbloom, marinesurvey]);
+      map.add(marinesurvey,0);
 
     // Create a new instance of the ScaleBar widget
     const scaleBar = new ScaleBar({
