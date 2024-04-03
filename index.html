@@ -64,7 +64,7 @@
       ) {
 
       // Set the API key for the ArcGIS API for JavaScript
-      esriConfig.apiKey = "AAPK7ec55599150b4a308e2cb5b3061951d0V031QmsxPbZowhaXDBb_7KJn4HhUyXv5Qxgp0vWFkAt5dqtugb17cRGjdusqdg6e";
+      esriConfig.apiKey = "AAPK878a14aaadbc4d548ff58dac573173ceN33USZsUb6MLs1CBPa2uNoL1qfn4Nl3g_HNSkYLEG34AOJmMZtATvQdypo8rhxln";
 
       const map = new Map({
           basemap: "oceans"
@@ -94,7 +94,7 @@
       outFields: ["DateOfCall", "KillCity", "Species","SuspectedCause", "WaterBodyName"],
       popupTemplate: fishkillPopupTemplate
     });
-      map.add(fishkill, 0);
+      map.add(fishkill);
 
     // /////////////////////////////////////////////////////////////////////
     // Defining a popup template for the AlgalBloom Feature Layer
@@ -112,7 +112,7 @@
       outFields: ["BloomObserved", "AlgalIDResult", "County", "SampleDateTime"],
       popupTemplate: algalbloomPopupTemplate
     });
-      map.add(algalbloom, 0);
+      map.add(algalbloom);
 
     // /////////////////////////////////////////////////////////////////////
     // Constructing the popup survey for marking marine pollution    
@@ -131,7 +131,7 @@
       popupTemplate: popupSurvey
     });
     // Adding the important feature layers to the map
-      map.add(marinesurvey,0);
+      map.add(marinesurvey);
 
     // Create a new instance of the ScaleBar widget
     const scaleBar = new ScaleBar({
